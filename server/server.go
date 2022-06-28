@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,7 +19,11 @@ func Init() {
 		port = "8080"
 	}
 
-	app.Static("/", "./ui/dist")
+	if os.Getenv("APP_ENV") == "development" {
+		app.Use(cors.New())
+	} else {
+		app.Static("/", "./ui/dist")
+	}
 
 	api := app.Group("/api")
 
