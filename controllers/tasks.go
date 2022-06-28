@@ -84,7 +84,13 @@ func CreateTask(ctx *fiber.Ctx) error {
 }
 
 func DeleteTask(ctx *fiber.Ctx) error {
-	err := repositories.DeleteTask(ctx.Params("id"))
+	taskId, err := strconv.ParseUint(ctx.Params("id"), 10, 32)
+
+	if err != nil {
+		return err
+	}
+
+	err = repositories.DeleteTask(uint(taskId))
 
 	if err != nil {
 		return ctx.Status(500).SendString(err.Error())

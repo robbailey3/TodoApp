@@ -1,6 +1,6 @@
-import type { Task } from "@/models/task";
-import tasksService from "@/services/tasksService";
-import { defineStore } from "pinia";
+import type { Task } from '@/models/task';
+import tasksService from '@/services/tasksService';
+import { defineStore } from 'pinia';
 
 export interface TasksState {
   tasks: Task[];
@@ -8,7 +8,7 @@ export interface TasksState {
   error: boolean;
 }
 
-const useTaskStore = defineStore("tasks", {
+const useTaskStore = defineStore('tasks', {
   state: (): TasksState => ({
     tasks: [],
     loading: false,
@@ -29,8 +29,11 @@ const useTaskStore = defineStore("tasks", {
     },
     async updateTask(task: Task) {
       await tasksService.updateTask(task);
-
       this.loadTasks();
+    },
+    async deleteTask(taskId: number) {
+      await tasksService.deleteTask(taskId);
+      this.tasks = this.tasks.filter((task) => task.id !== taskId);
     }
   }
 });
