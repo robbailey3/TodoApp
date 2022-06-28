@@ -1,9 +1,13 @@
 package main
 
 import (
+	"log"
+	"net"
+	"os"
+	"os/exec"
+
 	"github.com/robbailey3/todo-app/config"
 	"github.com/robbailey3/todo-app/server"
-	"log"
 )
 
 func main() {
@@ -15,5 +19,38 @@ func main() {
 		log.Fatal(err)
 	}
 
+	if os.Getenv("APP_ENV") == "development" {
+		startUiApp()
+	}
 	server.Init()
+}
+
+// Check if anything is running on port 3000
+func isUiAppRunning() bool {
+	port := ":3000"
+	ln, err := net.Listen("tcp", port)
+	if err != nil {
+		return true
+	}
+	defer ln.Close()
+	return false
+}
+
+func startUiApp() {
+	if isUiAppRunning() {
+		log.Println("UI app is already running")
+		return
+	}
+	log.Println("Starting UI app")
+
+	cmd := exec.Command("npm", "run", "dev")
+	cmd.Dir = "./ui"
+
+	err := cmd.Start()
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println("UI app started with process id:", cmd.Process.Pid)
 }

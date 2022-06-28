@@ -16,3 +16,15 @@ func GetTasks() ([]models.Task, error) {
 
 	return tasks, nil
 }
+
+func GetTasksByStatus(completed bool) ([]models.Task, error) {
+	var tasks []models.Task
+
+	result := config.DbConn.Where("completed = ?", completed).Find(&tasks)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return tasks, nil
+}

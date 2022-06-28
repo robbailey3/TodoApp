@@ -2,8 +2,10 @@ package server
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
 	"os"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/robbailey3/todo-app/router"
 )
 
 func Init() {
@@ -17,6 +19,10 @@ func Init() {
 	}
 
 	app.Static("/", "./ui/dist")
+
+	api := app.Group("/api")
+
+	router.SetupTaskRoutes(api)
 
 	if err := app.Listen(fmt.Sprintf(":%s", port)); err != nil {
 		panic(err)
