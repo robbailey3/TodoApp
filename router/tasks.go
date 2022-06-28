@@ -9,4 +9,7 @@ func SetupTaskRoutes(router fiber.Router) {
 	group := router.Group("/tasks")
 
 	group.Get("/", controllers.GetTasks)
+	group.Post("/", controllers.CreateTask)
+	group.Patch("/:id", controllers.UpdateTask)
+	group.Delete("/:id", controllers.DeleteTask)
 }
