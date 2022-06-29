@@ -1,19 +1,21 @@
 <template>
-  <div class="form-item flex gap-4 w-full items-center">
-    <label :for="task.id.toString()">
-      <input
-        class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        type="checkbox"
-        @change="handleChange(task)"
-        :checked="task.completed"
-        :id="task.id.toString()"
-      />{{ task.title }}
-    </label>
+  <div class="form-item flex w-full items-center">
+    <StyledCheckbox
+      :model-value="task.completed"
+      :label="task.title"
+      :id="`checkbox-${task.id}`"
+      @update:model-value="(val) => handleChange({ ...task, completed: val })"
+    />
+    <EditableText
+      :model-value="task.title"
+      @update:model-value="onTaskTitleUpdate"
+      :id="`task-title-${task.id}`"
+    />
     <button
       @click="handleButtonClick(task)"
-      class="bg-red-800 text-white font-bold p-4 rounded-xl shadow ml-auto"
+      class="text-gray-400 font-bold p-2 rounded-full ml-auto duration-300 px-3 hover:bg-gray-50 focus:bg-gray-50"
     >
-      DELETE
+      <font-awesome-icon icon="fa-solid fa-trash" />
     </button>
   </div>
   <pre>
@@ -24,6 +26,8 @@
 <script lang="ts" setup>
 import type { Task } from '@/models/task';
 import useTaskStore from '@/stores/tasks';
+import EditableText from './EditableText.vue';
+import StyledCheckbox from './StyledCheckbox.vue';
 
 const props = defineProps<{ task: Task }>();
 
@@ -36,5 +40,12 @@ async function handleChange(task: Task) {
 
 async function handleButtonClick(task: Task) {
   await deleteTask(task.id);
+}
+
+function onTaskTitleUpdate(newTitle: string) {
+  if (newTitle === props.task.title) {
+    return;
+  }
+  updateTask({ ...props.task, title: newTitle });
 }
 </script>

@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/todo-app/repositories"
 	"github.com/robbailey3/todo-app/request"
+	"github.com/robbailey3/todo-app/response"
 	"github.com/robbailey3/todo-app/utils"
 )
 
@@ -22,13 +23,13 @@ func CreateTask(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
 	}
 
-	err = repositories.CreateTask(task)
+	newTask, err := repositories.CreateTask(task)
 
 	if err != nil {
 		return ctx.Status(500).SendString(err.Error())
 	}
 
-	return ctx.Status(201).SendString("")
+	return response.Created(ctx, newTask)
 }
 
 func validateCreateTaskRequest(req request.CreateTask) []*utils.ValidationError {

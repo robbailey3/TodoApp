@@ -13,6 +13,14 @@ class TasksService {
     return response.data.result;
   }
 
+  public async createTask(title: string): Promise<Task> {
+    const response = await this.http.post<ApiResponse<Task>>('', {
+      title
+    });
+
+    return response.data.result;
+  }
+
   public async updateTask(task: Task): Promise<void> {
     await this.http.patch(`/${task.id}`, { ...task });
   }

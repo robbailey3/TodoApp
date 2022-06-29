@@ -49,16 +49,17 @@ func UpdateTask(id uint, task request.UpdateTask) error {
 	return nil
 }
 
-func CreateTask(task request.CreateTask) error {
-	result := config.DbConn.Create(&models.Task{
+func CreateTask(task request.CreateTask) (*models.Task, error) {
+	newTask := models.Task{
 		Title: task.Title,
-	})
+	}
+	result := config.DbConn.Create(&newTask)
 
 	if result.Error != nil {
-		return result.Error
+		return nil, result.Error
 	}
 
-	return nil
+	return &newTask, nil
 }
 
 func DeleteTask(id uint) error {
