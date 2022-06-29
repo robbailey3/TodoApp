@@ -1,5 +1,7 @@
 <template>
-  <div class="container mx-auto max-w-screen-md bg-white p-4 rounded shadow">
+  <div
+    class="container mx-auto max-w-screen-md bg-white p-4 rounded-xl m-12 shadow"
+  >
     <AddTask />
     <div class="pt-4">
       <template v-for="task of store.tasks" :key="task.id">
