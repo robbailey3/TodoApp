@@ -43,14 +43,18 @@ func startUiApp() {
 	}
 	log.Println("Starting UI app")
 
-	cmd := exec.Command("npm", "run", "dev")
-	cmd.Dir = "./ui"
+	go func() {
+		cmd := exec.Command("npm", "run", "dev")
+		cmd.Dir = "./ui"
 
-	err := cmd.Start()
+		if err := cmd.Start(); err != nil {
+			log.Fatal(err)
+		}
 
-	if err != nil {
-		log.Println(err)
-	}
+		if err := cmd.Wait(); err != nil {
+			log.Fatal(err)
+		}
+		log.Println("UI app started with process id:", cmd.Process.Pid)
+	}()
 
-	log.Println("UI app started with process id:", cmd.Process.Pid)
 }

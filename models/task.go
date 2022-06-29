@@ -1,8 +1,9 @@
 package models
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Task struct {
@@ -12,5 +13,4 @@ type Task struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
 	Title     string         `json:"title" validate:"required"`
 	Completed bool           `json:"completed" validate:"required"`
-	Deleted   bool           `json:"deleted"`
 }

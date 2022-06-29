@@ -14,16 +14,8 @@ func GetTasks(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusBadRequest).JSON(err)
 	}
 
-	if q.Deleted == nil {
-		q.Deleted = false
-	}
-
-	if q.Limit == nil {
+	if q.Limit == 0 {
 		q.Limit = 100
-	}
-
-	if q.Offset == nil {
-		q.Offset = 0
 	}
 
 	tasks, err := repositories.GetTasks(q)

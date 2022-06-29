@@ -5,17 +5,25 @@ import (
 	"github.com/robbailey3/todo-app/models"
 	"github.com/robbailey3/todo-app/query"
 	"github.com/robbailey3/todo-app/request"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
 func GetTasks(q query.GetTask) ([]models.Task, error) {
 	var tasks []models.Task
 
-	result := config.DbConn.
-		Where("deleted = ?", q.Deleted.(bool)).
-		Offset(q.Offset.(int)).Limit(q.Limit.(int)).
-		Order(clause.OrderByColumn{Column: clause.Column{Name: "id"}, Desc: true}).
-		Find(&tasks)
+	var result *gorm.DB
+
+	if q.Deleted {
+		result = config.DbConn.Unscoped().Offset(q.Offset).Limit(q.Limit).
+			Order(clause.OrderByColumn{Column: clause.Column{Name: "id"}, Desc: true}).
+			Find(&tasks)
+	} else {
+		result = config.DbConn.
+			Offset(q.Offset).Limit(q.Limit).
+			Order(clause.OrderByColumn{Column: clause.Column{Name: "id"}, Desc: true}).
+			Find(&tasks)
+	}
 
 	if result.Error != nil {
 		return nil, result.Error
