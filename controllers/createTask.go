@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/todo-app/repositories"
 	"github.com/robbailey3/todo-app/request"
+	"github.com/robbailey3/todo-app/utils"
 )
 
 func CreateTask(ctx *fiber.Ctx) error {
@@ -31,20 +31,6 @@ func CreateTask(ctx *fiber.Ctx) error {
 	return ctx.Status(201).SendString("")
 }
 
-func validateCreateTaskRequest(req request.CreateTask) []*ErrorResponse {
-	var errors []*ErrorResponse
-	validate := validator.New()
-	err := validate.Struct(req)
-
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element ErrorResponse
-			element.FailedField = err.StructNamespace()
-			element.Tag = err.Tag()
-			element.Value = err.Param()
-			errors = append(errors, &element)
-		}
-	}
-
-	return errors
+func validateCreateTaskRequest(req request.CreateTask) []*utils.ValidationError {
+	return utils.ValidateStruct(&req)
 }

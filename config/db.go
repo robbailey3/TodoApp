@@ -2,10 +2,11 @@ package config
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/robbailey3/todo-app/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"os"
 )
 
 var DbConn *gorm.DB
