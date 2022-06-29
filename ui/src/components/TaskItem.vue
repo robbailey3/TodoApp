@@ -18,9 +18,6 @@
       <font-awesome-icon icon="fa-solid fa-trash" />
     </button>
   </div>
-  <pre>
-    {{ task }}
-  </pre>
 </template>
 
 <script lang="ts" setup>
