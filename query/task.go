@@ -1,36 +1,26 @@
 package query
 
-import (
-	"github.com/go-playground/validator/v10"
-)
+// type TaskQuery struct {
+// 	Deleted interface{} `query:"deleted"`
+// 	Limit   interface{} `query:"limit"`
+// 	Offset  interface{} `query:"offset"`
+// }
 
-type TaskQuery struct {
-	Deleted interface{} `query:"deleted"`
-	Limit   interface{} `query:"limit"`
-	Offset  interface{} `query:"offset"`
-}
+// func (t *TaskQuery) Validate() []*ErrorResponse {
+// 	var errors []*ErrorResponse
+// 	validate := validator.New()
+// 	err := validate.Struct(t)
 
-type ErrorResponse struct {
-	FailedField string `json:"failedField"`
-	Tag         string `json:"tag"`
-	Value       string `json:"value"`
-}
+// 	if err != nil {
+// 		for _, err := range err.(validator.ValidationErrors) {
+// 			var element ErrorResponse
+// 			element.FailedField = err.StructNamespace()
+// 			element.Tag = err.Tag()
+// 			element.Value = err.Param()
+// 			errors = append(errors, &element)
+// 		}
+// 		return errors
+// 	}
 
-func (t *TaskQuery) Validate() []*ErrorResponse {
-	var errors []*ErrorResponse
-	validate := validator.New()
-	err := validate.Struct(t)
-
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element ErrorResponse
-			element.FailedField = err.StructNamespace()
-			element.Tag = err.Tag()
-			element.Value = err.Param()
-			errors = append(errors, &element)
-		}
-		return errors
-	}
-
-	return nil
-}
+// 	return nil
+// }

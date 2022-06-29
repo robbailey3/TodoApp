@@ -4,15 +4,16 @@ import (
 	"github.com/robbailey3/todo-app/config"
 	"github.com/robbailey3/todo-app/models"
 	"github.com/robbailey3/todo-app/query"
+	"github.com/robbailey3/todo-app/request"
 	"gorm.io/gorm/clause"
 )
 
-func GetTasks(query query.TaskQuery) ([]models.Task, error) {
+func GetTasks(q query.GetTask) ([]models.Task, error) {
 	var tasks []models.Task
 
 	result := config.DbConn.
-		Where("deleted = ?", query.Deleted.(bool)).
-		Offset(query.Offset.(int)).Limit(query.Limit.(int)).
+		Where("deleted = ?", q.Deleted.(bool)).
+		Offset(q.Offset.(int)).Limit(q.Limit.(int)).
 		Order(clause.OrderByColumn{Column: clause.Column{Name: "id"}, Desc: true}).
 		Find(&tasks)
 
@@ -23,7 +24,7 @@ func GetTasks(query query.TaskQuery) ([]models.Task, error) {
 	return tasks, nil
 }
 
-func UpdateTask(id uint, task models.Task) error {
+func UpdateTask(id uint, task request.UpdateTask) error {
 	result := config.DbConn.
 		Model(&models.Task{}).
 		Where("id = ?", id).
@@ -40,8 +41,10 @@ func UpdateTask(id uint, task models.Task) error {
 	return nil
 }
 
-func CreateTask(task models.Task) error {
-	result := config.DbConn.Create(&task)
+func CreateTask(task request.CreateTask) error {
+	result := config.DbConn.Create(&models.Task{
+		Title: task.Title,
+	})
 
 	if result.Error != nil {
 		return result.Error
