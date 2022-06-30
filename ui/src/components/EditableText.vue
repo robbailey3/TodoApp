@@ -2,8 +2,8 @@
   <template v-if="!isEdit">
     <div
       role="button"
-      @dblclick="onDoubleClick"
       class="inline-block px-4 py-2 grow"
+      @dblclick="onDoubleClick"
     >
       {{ modelValue }}
     </div>
@@ -11,13 +11,13 @@
   <template v-else>
     <label :for="id" class="sr-only">Edit task title</label>
     <input
-      type="text"
       :id="id"
+      type="text"
+      :value="value"
+      class="inline-block border border-gray-200 rounded px-4 py-2 grow"
       @change="onValueChange"
       @keyup.enter="onEnter"
       @keyup.escape="onEscape"
-      :value="value"
-      class="inline-block border border-gray-200 rounded px-4 py-2 grow"
     />
   </template>
 </template>

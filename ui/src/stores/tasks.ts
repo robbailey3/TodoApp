@@ -21,8 +21,8 @@ const useTaskStore = defineStore('tasks', {
         const tasks = await tasksService.getTasks();
         this.tasks = tasks;
         this.loading = false;
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.error(e);
         this.loading = false;
         this.error = true;
       }
@@ -34,8 +34,8 @@ const useTaskStore = defineStore('tasks', {
         this.tasks.push(task);
         this.tasks.sort((a, b) => b.id - a.id);
         this.loading = false;
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.error(e);
         this.loading = false;
         this.error = true;
       }

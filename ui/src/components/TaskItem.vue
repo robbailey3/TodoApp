@@ -1,19 +1,19 @@
 <template>
   <div class="form-item flex w-full items-center">
     <StyledCheckbox
+      :id="`checkbox-${task.id}`"
       :model-value="task.completed"
       :label="task.title"
-      :id="`checkbox-${task.id}`"
       @update:model-value="(val) => handleChange({ ...task, completed: val })"
     />
     <EditableText
+      :id="`task-title-${task.id}`"
       :model-value="task.title"
       @update:model-value="onTaskTitleUpdate"
-      :id="`task-title-${task.id}`"
     />
     <button
-      @click="handleButtonClick(task)"
       class="text-gray-400 font-bold p-2 rounded-full ml-auto duration-300 px-3 hover:bg-gray-50 focus:bg-gray-50"
+      @click="handleButtonClick(task)"
     >
       <font-awesome-icon icon="fa-solid fa-trash" />
     </button>

@@ -1,7 +1,7 @@
 <template>
   <div class="px-2 py-4">
     <div class="styled-checkbox">
-      <input type="checkbox" :checked="checked" @change="onChange" :id="id" />
+      <input :id="id" type="checkbox" :checked="checked" @change="onChange" />
       <label :for="id"></label>
     </div>
   </div>
