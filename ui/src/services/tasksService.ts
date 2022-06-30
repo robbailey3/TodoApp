@@ -4,7 +4,7 @@ import axios from 'axios';
 
 class TasksService {
   private readonly http = axios.create({
-    baseURL: 'http://localhost:8000/api/tasks'
+    baseURL: '/api/tasks'
   });
 
   public async getTasks(): Promise<Task[]> {
