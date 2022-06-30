@@ -1,7 +1,5 @@
 # Todo App
-<div>
-[https://rb-todo-app.herokuapp.com/](Here)
-</div>
+[See deployed app here](https://rb-todo-app.herokuapp.com/)
 
 ## What?
 
