@@ -7,10 +7,13 @@
 				v-model="value"
 				type="text"
 				class="border border-gray-200 rounded px-4 py-2 w-full"
-				@keyup.enter="onEnter"
+				@keyup.enter="onSubmit"
 			/>
 		</div>
-		<button class="bg-teal-600 px-4 py-2 rounded shadow text-white">
+		<button
+			class="bg-teal-600 px-4 py-2 rounded shadow text-white"
+			@click="onSubmit"
+		>
 			Add Task
 		</button>
 	</div>
@@ -24,7 +27,7 @@ const store = useTaskStore();
 
 const value = ref('');
 
-async function onEnter(): Promise<void> {
+async function onSubmit(): Promise<void> {
 	await store.createTask(value.value);
 	value.value = '';
 }
