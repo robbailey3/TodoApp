@@ -52,6 +52,7 @@ func UpdateTask(id uint, task request.UpdateTask) error {
 func CreateTask(task request.CreateTask) (*models.Task, error) {
 	newTask := models.Task{
 		Title: task.Title,
+		IP:    task.IP,
 	}
 	result := config.DbConn.Create(&newTask)
 

@@ -13,4 +13,5 @@ type Task struct {
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"deletedAt"`
 	Title     string         `json:"title" validate:"required"`
 	Completed bool           `json:"completed" validate:"required"`
+	IP        string         `json:"ip"`
 }

@@ -17,6 +17,8 @@ func CreateTask(ctx *fiber.Ctx) error {
 		return err
 	}
 
+	task.IP = ctx.IP()
+
 	errors := validateCreateTaskRequest(task)
 
 	if errors != nil {
