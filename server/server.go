@@ -3,12 +3,15 @@ package server
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/helmet/v2"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/todo-app/router"
@@ -18,7 +21,12 @@ func setupMiddleware(app *fiber.App) {
 	app.Get("/metrics", monitor.New(monitor.Config{Title: "Todo App"}))
 	app.Use(logger.New())
 	app.Use(recover.New())
-	app.Use(limiter.New())
+	app.Use(limiter.New(limiter.Config{
+		Max:      100,
+		Duration: 30 * time.Second,
+	}))
+	app.Use(helmet.New())
+	app.Use(etag.New())
 }
 
 func Init() {
