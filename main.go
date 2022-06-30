@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -12,7 +13,7 @@ import (
 
 func main() {
 	if err := config.Init(); err != nil {
-		log.Fatal(err)
+		fmt.Println("Cannot init config:", err)
 	}
 
 	if err := config.InitDatabase(); err != nil {
