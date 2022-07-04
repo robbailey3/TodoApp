@@ -5,20 +5,21 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/todo-app/repositories"
+	"github.com/robbailey3/todo-app/response"
 )
 
 func DeleteTask(ctx *fiber.Ctx) error {
 	taskId, err := strconv.ParseUint(ctx.Params("id"), 10, 32)
 
 	if err != nil {
-		return err
+		return response.BadRequest(ctx, err)
 	}
 
 	err = repositories.DeleteTask(uint(taskId))
 
 	if err != nil {
-		return ctx.Status(500).SendString(err.Error())
+		return response.ServerError(ctx, err)
 	}
 
-	return ctx.Status(204).SendString("")
+	return response.Accepted(ctx)
 }

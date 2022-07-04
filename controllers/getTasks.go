@@ -11,7 +11,7 @@ func GetTasks(ctx *fiber.Ctx) error {
 	var q query.GetTask
 
 	if err := ctx.QueryParser(&q); err != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(err)
+		return response.BadRequest(ctx, err)
 	}
 
 	if q.Limit == 0 {
@@ -21,7 +21,7 @@ func GetTasks(ctx *fiber.Ctx) error {
 	tasks, err := repositories.GetTasks(q)
 
 	if err != nil {
-		return ctx.Status(500).SendString(err.Error())
+		return response.ServerError(ctx, err)
 	}
 
 	return response.Ok(ctx, tasks)

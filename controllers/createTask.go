@@ -14,7 +14,7 @@ func CreateTask(ctx *fiber.Ctx) error {
 	err := ctx.BodyParser(&task)
 
 	if err != nil {
-		return err
+		return response.BadRequest(ctx, err)
 	}
 
 	task.IP = ctx.IP()
@@ -22,13 +22,13 @@ func CreateTask(ctx *fiber.Ctx) error {
 	errors := validateCreateTaskRequest(task)
 
 	if errors != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
+		return response.ValidationFailed(ctx, errors)
 	}
 
 	newTask, err := repositories.CreateTask(task)
 
 	if err != nil {
-		return ctx.Status(500).SendString(err.Error())
+		return response.ServerError(ctx, err)
 	}
 
 	return response.Created(ctx, newTask)

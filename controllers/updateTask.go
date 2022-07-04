@@ -3,17 +3,12 @@ package controllers
 import (
 	"strconv"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/robbailey3/todo-app/repositories"
 	"github.com/robbailey3/todo-app/request"
+	"github.com/robbailey3/todo-app/response"
+	"github.com/robbailey3/todo-app/utils"
 )
-
-type ErrorResponse struct {
-	FailedField string `json:"failedField"`
-	Tag         string `json:"tag"`
-	Value       string `json:"value"`
-}
 
 func UpdateTask(ctx *fiber.Ctx) error {
 	var task request.UpdateTask
@@ -21,45 +16,30 @@ func UpdateTask(ctx *fiber.Ctx) error {
 	err := ctx.BodyParser(&task)
 
 	if err != nil {
-		return err
+		return response.BadRequest(ctx, err)
 	}
 
 	errors := validateUpdateTaskRequest(task)
 
 	if errors != nil {
-		return ctx.Status(fiber.StatusBadRequest).JSON(errors)
+		return response.ValidationFailed(ctx, errors)
 	}
 
 	taskId, err := strconv.ParseUint(ctx.Params("id"), 10, 32)
 
 	if err != nil {
-		return err
+		return response.BadRequest(ctx, err)
 	}
 
 	err = repositories.UpdateTask(uint(taskId), task)
 
 	if err != nil {
-		return ctx.Status(500).SendString(err.Error())
+		return response.ServerError(ctx, err)
 	}
 
-	return ctx.Status(204).SendString("")
+	return response.Accepted(ctx)
 }
 
-func validateUpdateTaskRequest(req request.UpdateTask) []*ErrorResponse {
-	var errors []*ErrorResponse
-	validate := validator.New()
-	err := validate.Struct(req)
-
-	if err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			var element ErrorResponse
-			element.FailedField = err.StructNamespace()
-			element.Tag = err.Tag()
-			element.Value = err.Param()
-			errors = append(errors, &element)
-		}
-		return errors
-	}
-
-	return nil
+func validateUpdateTaskRequest(req request.UpdateTask) []*utils.ValidationError {
+	return utils.ValidateStruct(req)
 }
