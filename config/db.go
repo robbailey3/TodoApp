@@ -11,8 +11,16 @@ import (
 
 var DbConn *gorm.DB
 
+func getDsn() string {
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		dsn = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s TimeZone=Europe/London", os.Getenv("DB_HOST"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("DB_PORT"))
+	}
+	return dsn
+}
+
 func InitDatabase() error {
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s TimeZone=Europe/London", os.Getenv("DB_HOST"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("DB_PORT"))
+	dsn := getDsn()
 
 	db, err := gorm.Open(postgres.New(postgres.Config{
 		DSN:                  dsn,
