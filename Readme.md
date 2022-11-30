@@ -1,5 +1,4 @@
 # Todo App
-[See deployed app here](https://rb-todo-app.herokuapp.com/)
 
 ## What?
 
